@@ -35,10 +35,17 @@ app.controller("ctrlSearcher", function($scope, $http, TMDB_URL, SERVICE, API_KE
             var url = TMDB_URL + SERVICE + '?api_key=' + API_KEY + '&query=' + $scope.name.replace(" ", "+") + '&callback=' + CALLBACK;
             $scope.name = "";
             $scope.movieList = [];
-            $http.jsonp(url).then(function(data, status) {
+            $http.jsonp(url).then(function(data, status){
                 $scope.result = angular.fromJson(data);
                 $scope.movieList = angular.fromJson(data.data.results);
             });
+            /*$http.get('api/data.php?text=' + $scope.name.replace(" ", "+")).
+            success(function(data) {
+            // here the data from the api is assigned to a variable named users
+                $scope.result = angular.fromJson(data);
+                $scope.movieList = angular.fromJson(data.results);
+                console.log(angular.fromJson(data));
+            });*/
         }
     }; 
 });

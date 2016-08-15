@@ -37,11 +37,13 @@ and open the template in the editor.
                                 <tr>
                                     <th>Movie Title</th>
                                     <th>OverView</th>
+                                    <th>Release Date</th>
                                 </tr>
                             </thead>
-                            <tr ng-repeat="mov in res.known_for">
+                            <tr ng-repeat="mov in res.known_for | orderBy:'release_date'">
                                 <td>{{mov.original_title}}</td>
                                 <td>{{mov.overview}}</td>
+                                <td>{{mov.release_date}}</td>
                             </tr>
                         </table>
                     </div>
