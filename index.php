@@ -13,6 +13,8 @@ and open the template in the editor.
     <script src="scripts/vendor/angular/angular_1.4.8.min.js" type="text/javascript"></script>
     <script src="scripts/vendor/angular/angular-route.js" type="text/javascript"></script>
     <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/dirPagination.js"></script>
+
     <body>
         <div ng-app="movActSearcher" class="container" >
             <div ng-view></div>
@@ -24,10 +26,9 @@ and open the template in the editor.
                     </span>
                 </div>
                 
-                <div class="panel panel-info marging-top">
-                    <!--<pre>{{ result }}</pre>-->
+                <div class="panel panel-info marging-top" >
                     <div class="panel-heading">Results</div>
-                    <div class="panel-body" ng-repeat="res in movieList" ng-if="res.media_type == 'person'" >
+                    <div class="panel-body" dir-paginate="res in movieList|itemsPerPage:pageSize" current-page="currentPage">
                         <div style='text-align: center;'>
                             <img ng-if="res.profile_path != null" src='{{"http://image.tmdb.org/t/p/w300" + res.profile_path}}' class="img-thumbnail img-responsive img-circle" width="100px;" />
                             <p>{{res.name}}</p>
@@ -47,13 +48,10 @@ and open the template in the editor.
                             </tr>
                         </table>
                     </div>
+                    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" >
+                    </dir-pagination-controls>
                 </div>
             </form>
-            <!--
-            <div ng-controller="TypeAheadController">
-                <p>Name : </p>
-                <typeahead items="items" prompt="Start typing a US state" title="name" subtitle="abbreviation" model="name" on-select="onItemSelected()" />
-            </div>-->
         </div>
     </body>
 </html>

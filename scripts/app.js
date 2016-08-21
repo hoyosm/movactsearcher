@@ -5,13 +5,7 @@
  */
 
 
-var app = angular.module("movActSearcher", ["ngRoute"]);
-
-/* Constants for get data from tmbd api */
-app.constant('TMDB_URL', 'http://api.themoviedb.org/3');
-app.constant('SERVICE', '/search/multi');
-app.constant('API_KEY', 'a0cc7c622e4012ed0e15a080fb621a88');
-app.constant('CALLBACK', 'JSON_CALLBACK');
+var app = angular.module("movActSearcher", ["ngRoute", 'angularUtils.directives.dirPagination']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -27,25 +21,29 @@ app.config(function($routeProvider) {
 });
 
 /* Controler for get data from tmdb api */
-app.controller("ctrlSearcher", function($scope, $http, TMDB_URL, SERVICE, API_KEY, CALLBACK) {
+app.controller("ctrlSearcher", function($scope, $http) {
     $scope.result = 'searching...';
     $scope.submit = function()
     {
         if ($scope.name) {
-            var url = TMDB_URL + SERVICE + '?api_key=' + API_KEY + '&query=' + $scope.name.replace(" ", "+") + '&callback=' + CALLBACK;
-            $scope.name = "";
             $scope.movieList = [];
+            /*var url = TMDB_URL + SERVICE + '?api_key=' + API_KEY + '&query=' + $scope.name.replace(" ", "+") + '&callback=' + CALLBACK;
+            $scope.name = "";
+            
             $http.jsonp(url).then(function(data, status){
                 $scope.result = angular.fromJson(data);
                 $scope.movieList = angular.fromJson(data.data.results);
-            });
-            /*$http.get('api/data.php?text=' + $scope.name.replace(" ", "+")).
-            success(function(data) {
-            // here the data from the api is assigned to a variable named users
-                $scope.result = angular.fromJson(data);
-                $scope.movieList = angular.fromJson(data.results);
-                console.log(angular.fromJson(data));
             });*/
+            $http.get('api/data.php?text=' + $scope.name.replace(" ", "+")).
+            success(function(data)
+            {
+                $scope.name = "";
+                $scope.result = data;
+                $scope.movieList = data.results;
+                //console.log($scope.movieList);
+                $scope.currentPage = 1;
+                $scope.pageSize = 1;
+            });
         }
     }; 
 });
